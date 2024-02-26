@@ -58,8 +58,11 @@ for gen in range(1000):
                 action.append(a)
             action = np.array(action)*2.0
             state, D, done, info = env.step(action)
+
+        #learning happens here for reward functions 
+
         for pol,d in zip(policyCol,D):
-            pol.fitness=d
+            pol.fitness=d#neural network critic reward function
         G=env.data["Global Reward"]
         Globals.append(G)
 
