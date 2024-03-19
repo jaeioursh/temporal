@@ -75,6 +75,8 @@ class Net(nn.Module):
         return loss.detach().item()
 
     def alignment_loss(self,o, t):
+        o=o[:,-1,:]
+        t=t[:,-1,:]
         ot=torch.transpose(o,0,1)
         tt=torch.transpose(t,0,1)
 
@@ -115,7 +117,7 @@ class attention():
 
 if __name__ == "__main__":
     L=10
-    net=Net(idim=6,seq_len=L)
+    net=Net(idim=6,seq_len=L,loss_fn=0)
     s=np.arange(-10,10,0.5)
     n=len(s)
     X=np.zeros((n,L,6))
