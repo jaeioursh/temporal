@@ -61,7 +61,7 @@ class Net():
         loss = -torch.mean(align)
         return loss
     
-class align():
+class fitnesscritic():
     def __init__(self,nagents,loss_f=0):
         self.nagents=nagents
         self.nets=[Net(loss_fn=loss_f) for i in range(nagents)]
@@ -70,8 +70,8 @@ class align():
     def add(self,trajectory,G,agent_index):
         self.hist[agent_index].append([trajectory,G])
 
-    def evaluate(self,trajectory,agent_index):
-        return self.nets[agent_index].feed(trajectory[-1])
+    def evaluate(self,trajectory,agent_index):   #evaluate max state
+        return np.max(self.nets[agent_index].feed(trajectory))
 
     def train(self):
         for a in range(self.nagents):
@@ -82,8 +82,9 @@ class align():
                     trajG=sample(self.hist[a],32)
                 S,G=[],[]
                 for traj,g in trajG:
-                    S.append(traj[-1])
-                    G.append([g])
+                    for s in traj:              #train whole trajectory
+                        S.append(s)
+                        G.append([g])
                 S,G=np.array(S),np.array(G)
                 self.nets[a].train(S,G)
 

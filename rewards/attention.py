@@ -90,9 +90,9 @@ class Net(nn.Module):
         return loss
     
 class attention():
-    def __init__(self,nagents):
+    def __init__(self,nagents,loss_f=0):
         self.nagents=nagents
-        self.nets=[Net() for i in range(nagents)]
+        self.nets=[Net(loss_fn=loss_f) for i in range(nagents)]
         self.hist=[deque(maxlen=30000) for i in range(nagents)]
 
     def add(self,trajectory,G,agent_index):
