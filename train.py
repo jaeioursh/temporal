@@ -31,6 +31,7 @@ def make_env(nagents,rand=0):
 
 
 def train(env, reward_mechanism, generations=4000):
+    R=[]
     initCcea(input_shape=8, num_outputs=2, num_units=20)(env.data)
 
     populationSize=len(env.data['Agent Populations'][0])
@@ -69,10 +70,11 @@ def train(env, reward_mechanism, generations=4000):
                 evalutaion_data.append([trajectories[a],policyCol[a],a])
                 reward_mechanism.add(trajectories[a],G,a)
             Globals.append(G)
-
+        R.append(max(Globals))
         reward_mechanism.train()
         for trajectory,policy,agent_index in evalutaion_data:
             policy.fitness=reward_mechanism.evaluate(trajectory,agent_index)
         print("Gen :"+str(gen)+"  Best G: "+str(max(Globals)))
 
         evolveCceaPolicies(env.data)
+    return R
