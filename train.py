@@ -21,7 +21,7 @@ def make_env(nagents,rand=0):
 
     sim = RoverDomainGym(nagents,30,pos,vals)
  
-    sim.data["Coupling"]=1
+    sim.data["Coupling"]=2
     sim.data['Number of Agents']=nagents
     sim.data['Trains per Episode']=32 #pop size
 

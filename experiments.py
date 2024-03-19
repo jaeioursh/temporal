@@ -5,7 +5,7 @@ from rewards.fitnesscritic import fitnesscritic
 import multiprocessing as mp
 import numpy as np
 import pickle as pkl
-
+import time
 
 
 def experiment(n_agents,reward_type,trial):
@@ -23,11 +23,18 @@ def experiment(n_agents,reward_type,trial):
     elif reward_type==4:
         reward_mechanism=fitnesscritic(n_agents)
 
-    R,pos=train(env,reward_mechanism,5)
+    R,pos=train(env,reward_mechanism)
     with open("saves/"+fname,"wb") as f:
         pkl.dump([R,pos],f)
-        print(np.array(R).shape)
-        print(np.array(pos).shape)
-    
 
-experiment(2,4,0)
+    
+for n_agents in range(4,6,8):
+    for reward_type in [0,1,2,3,4]:
+        procs=[]
+        for trial in range(12):
+            p=mp.Process(target=experiment,args=(n_agents,reward_type,trial))
+            time.sleep(0.05)
+            procs.append(p)
+            #p.join()git ad
+        for p in procs:
+            p.join()
