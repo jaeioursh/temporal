@@ -35,6 +35,6 @@ for n_agents in range(4,6,8):
             p=mp.Process(target=experiment,args=(n_agents,reward_type,trial))
             time.sleep(0.05)
             procs.append(p)
-            #p.join()git ad
+            p.start()
         for p in procs:
             p.join()
