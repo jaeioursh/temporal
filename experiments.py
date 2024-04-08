@@ -28,13 +28,15 @@ def experiment(n_agents,reward_type,trial,device):
     with open("saves/"+fname,"wb") as f:
         pkl.dump([R,pos],f)
 
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
-try:
-    mp.set_start_method('spawn')
-except:
-    print("no spawn")
+
 
 if __name__ == '__main__':
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    print(device)
+    try:
+        mp.set_start_method('spawn')
+    except:
+        print("no spawn")
     for n_agents in [4,6,8]:
         for reward_type in [0,1,2,3,4]:
             procs=[]
