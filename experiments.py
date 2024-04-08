@@ -7,7 +7,7 @@ import numpy as np
 import pickle as pkl
 import time
 import torch
-import torch.multiprocessing as mp
+
 
 def experiment(n_agents,reward_type,trial,device):
     fname="-".join([str(i) for i in [n_agents,reward_type,trial]])+".pkl"
@@ -28,8 +28,14 @@ def experiment(n_agents,reward_type,trial,device):
     with open("saves/"+fname,"wb") as f:
         pkl.dump([R,pos],f)
 
+try:
+   mp.set_start_method('spawn', force=True)
+   print("spawned")
+except RuntimeError:
+   pass
+
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
-mp.set_start_method('spawn')
+
 print(device)
 for n_agents in [4,6,8]:
     for reward_type in [0,1,2,3,4]:
