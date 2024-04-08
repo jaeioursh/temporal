@@ -34,14 +34,14 @@ try:
 except:
     print("no spawn")
 
-print(device)
-for n_agents in [4,6,8]:
-    for reward_type in [0,1,2,3,4]:
-        procs=[]
-        for trial in range(1):
-            p=mp.Process(target=experiment,args=(n_agents,reward_type,trial,device))
-            time.sleep(0.05)
-            procs.append(p)
-            p.start()
-        for p in procs:
-            p.join()
+if __name__ == '__main__':
+    for n_agents in [4,6,8]:
+        for reward_type in [0,1,2,3,4]:
+            procs=[]
+            for trial in range(1):
+                p=mp.Process(target=experiment,args=(n_agents,reward_type,trial,device))
+                time.sleep(1)
+                procs.append(p)
+                p.start()
+            for p in procs:
+                p.join()
