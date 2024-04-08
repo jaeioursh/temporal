@@ -24,7 +24,7 @@ def experiment(n_agents,reward_type,trial,device):
     elif reward_type==4:
         reward_mechanism=fitnesscritic(n_agents,device)
 
-    R,pos=train(env,reward_mechanism,2)
+    R,pos=train(env,reward_mechanism)
     with open("saves/"+fname,"wb") as f:
         pkl.dump([R,pos],f)
 
