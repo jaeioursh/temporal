@@ -58,7 +58,7 @@ class Net(nn.Module):
         return self.wout2(self.acti(self.wout1(res)))
 
     def feed(self,x):
-        x=torch.from_numpy(x.astype(np.float32))
+        x=torch.from_numpy(x.astype(np.float32)).to(self.device)
         pred=self.forward(x)
         return pred.cpu().detach().numpy()
         
