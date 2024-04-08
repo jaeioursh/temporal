@@ -40,7 +40,7 @@ if __name__ == '__main__':
     for n_agents in [4,6,8]:
         for reward_type in [0,1,2,3,4]:
             procs=[]
-            for trial in range(1):
+            for trial in range(10):
                 p=mp.Process(target=experiment,args=(n_agents,reward_type,trial,device))
                 time.sleep(1)
                 procs.append(p)
