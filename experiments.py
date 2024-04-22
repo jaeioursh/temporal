@@ -37,10 +37,10 @@ if __name__ == '__main__':
         mp.set_start_method('spawn')
     except:
         print("no spawn")
-    for n_agents in [4,6,8]:
-        for reward_type in [0,1,2,3,4]:
+    for reward_type in [0,1,2,3,4]:
+        for n_agents in [4,6,8]:
             procs=[]
-            for trial in range(10):
+            for trial in range(10,20):
                 p=mp.Process(target=experiment,args=(n_agents,reward_type,trial,device))
                 time.sleep(1)
                 procs.append(p)

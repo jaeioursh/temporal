@@ -25,7 +25,7 @@ def getPositionEncoding(seq_len, d, n=10000):
     return P
 
 class Net(nn.Module):
-    def __init__(self,device,hidden=20*4,lr=5e-3,seq_len=31,idim=8,loss_fn=0):#*4
+    def __init__(self,device,hidden=20*4,lr=5e-4,seq_len=31,idim=8,loss_fn=0):#*4
         super(Net, self).__init__()
         learning_rate=lr
         self.device=device
@@ -104,10 +104,10 @@ class attention():
     def train(self):
         for a in range(self.nagents):
             for i in range(100):
-                if len(self.hist[a])<32:
+                if len(self.hist[a])<24:
                     trajG=self.hist[a]
                 else:
-                    trajG=sample(self.hist[a],32)
+                    trajG=sample(self.hist[a],24)
                 S,G=[],[]
                 for traj,g in trajG:
                     S.append(traj)

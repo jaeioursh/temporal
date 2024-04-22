@@ -4,7 +4,7 @@ from collections import deque
 from random import sample
 
 class Net():
-    def __init__(self,device,hidden=20*4,lr=5e-3,loss_fn=2):#*4
+    def __init__(self,device,hidden=20*4,lr=5e-4,loss_fn=2):#*4
         learning_rate=lr
         self.device=device
 
@@ -76,10 +76,10 @@ class align():
     def train(self):
         for a in range(self.nagents):
             for i in range(100):
-                if len(self.hist[a])<32:
+                if len(self.hist[a])<24:
                     trajG=self.hist[a]
                 else:
-                    trajG=sample(self.hist[a],32)
+                    trajG=sample(self.hist[a],24)
                 S,G=[],[]
                 for traj,g in trajG:
                     S.append(traj[-1])

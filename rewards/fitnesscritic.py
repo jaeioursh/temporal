@@ -76,10 +76,10 @@ class fitnesscritic():
     def train(self):
         for a in range(self.nagents):
             for i in range(100):
-                if len(self.hist[a])<32:
+                if len(self.hist[a])<24:
                     trajG=self.hist[a]
                 else:
-                    trajG=sample(self.hist[a],32)
+                    trajG=sample(self.hist[a],24)
                 S,G=[],[]
                 for traj,g in trajG:
                     for s in traj:              #train whole trajectory
