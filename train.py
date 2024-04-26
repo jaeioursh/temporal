@@ -26,6 +26,7 @@ def make_env(nagents,rand=0):
     sim.data['Trains per Episode']=32 #pop size
 
     obs=sim.reset()
+    
     return sim
 
 
@@ -37,7 +38,7 @@ def train(env, reward_mechanism, generations=4000):
 
     populationSize=len(env.data['Agent Populations'][0])
     pop=env.data['Agent Populations']
-
+    
     nagents=env.data['Number of Agents']
 
     for gen in range(generations):
@@ -83,3 +84,7 @@ def train(env, reward_mechanism, generations=4000):
 
         evolveCceaPolicies(env.data)
     return R,pos
+
+if __name__=="__main__":
+    env=make_env(4)
+    train(env,None)

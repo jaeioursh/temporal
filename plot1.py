@@ -2,12 +2,12 @@ import numpy as np
 import pickle as pkl
 import matplotlib.pyplot as plt
 plt.style.use('tableau-colorblind10')
-nagents=8
+nagents=4
 window=20
 lbl=["End State","End State Aln","Attn.","Attn Aln","Fit Critic"]
 for exp in range(5):
     R=[]
-    for trial in range(10):
+    for trial in range(10,20):
         fname="-".join([str(s) for s in [nagents,exp,trial]])+".pkl"
         print(fname)
         with open("saves/"+fname,"rb") as f:
@@ -31,5 +31,5 @@ plt.legend()
 plt.title(str(nagents)+" agents")
 plt.xlabel("Generations")
 plt.ylabel("Global Evaluation")
-plt.savefig("figs/1_"+str(nagents)+".png")
+plt.savefig("figs/1_"+str(nagents)+".5.png")
 plt.show()
