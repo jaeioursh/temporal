@@ -7,7 +7,7 @@ window=20
 lbl=["End State","End State Aln","Attn.","Attn Aln","Fit Critic"]
 for exp in range(5):
     R=[]
-    for trial in range(10,20):
+    for trial in range(20,30):
         fname="-".join([str(s) for s in [nagents,exp,trial]])+".pkl"
         print(fname)
         with open("saves/"+fname,"rb") as f:
@@ -31,5 +31,5 @@ plt.legend()
 plt.title(str(nagents)+" agents")
 plt.xlabel("Generations")
 plt.ylabel("Global Evaluation")
-plt.savefig("figs/1_"+str(nagents)+".5.png")
-plt.show()
+plt.savefig("figs/1_"+str(nagents)+".75.png")
+#plt.show()

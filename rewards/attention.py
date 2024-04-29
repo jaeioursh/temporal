@@ -75,8 +75,8 @@ class Net(nn.Module):
         return loss.cpu().detach().item()
 
     def alignment_loss(self,o, t):
-        o=o[:,-1,:]
-        t=t[:,-1,:]
+        o=o
+        t=t
         ot=torch.transpose(o,0,1)
         tt=torch.transpose(t,0,1)
 
