@@ -5,11 +5,12 @@ pyximport.install()
 
 from rover_domain_core_gym import RoverDomainGym
 from code.ccea_2 import *
+from code.mod import assignDifferenceRewardTemporal
 
 #pri alignment multiagent tumernt(vals)
 def make_env(nagents,rand=0):
     vals =np.array([0.8,1.0,0.6,0.3,0.2,0.1])
-    
+    print(sum(vals))
     pos=np.array([
         [0.0, 0.0],
         [1.0, 1.0],
@@ -24,6 +25,9 @@ def make_env(nagents,rand=0):
     sim.data["Coupling"]=1
     sim.data['Number of Agents']=nagents
     sim.data['Trains per Episode']=32 #pop size
+
+    sim.data["Reward Function"] = assignDifferenceRewardTemporal
+    sim.data["Evaluation Function"] = assignDifferenceRewardTemporal
 
     obs=sim.reset()
     return sim

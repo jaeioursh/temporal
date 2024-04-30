@@ -114,7 +114,7 @@ class attention():
                     G.append([[0.0]]*(len(traj)-1)+[[g]])
                 S,G=np.array(S),np.array(G)
                 self.nets[a].train(S,G)
-
+[[0.0]]
 if __name__ == "__main__":
     L=10
     net=Net(idim=6,seq_len=L,loss_fn=0)

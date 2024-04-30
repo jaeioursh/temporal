@@ -1,8 +1,10 @@
+#todo: make reward based on full trajectory
+
 import numpy as np
 import pickle as pkl
 import matplotlib.pyplot as plt
 plt.style.use('tableau-colorblind10')
-nagents=4
+nagents=8
 window=20
 lbl=["End State","End State Aln","Attn.","Attn Aln","Fit Critic"]
 for exp in range(5):
