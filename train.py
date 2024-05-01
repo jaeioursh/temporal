@@ -9,7 +9,7 @@ from code.mod import assignDifferenceRewardTemporal
 
 
 #pri alignment multiagent tumernt(vals)
-def make_env(nagents,rand=0):
+def make_env(nagents,coupling=1,rand=0):
     vals =np.array([0.8,1.0,0.6,0.3,0.2,0.1])
     
     pos=np.array([
@@ -23,7 +23,7 @@ def make_env(nagents,rand=0):
 
     sim = RoverDomainGym(nagents,30,pos,vals)
  
-    sim.data["Coupling"]=2
+    sim.data["Coupling"]=coupling
     sim.data['Number of Agents']=nagents
     sim.data['Trains per Episode']=32 #pop size
 
