@@ -38,7 +38,7 @@ if __name__ == '__main__':
         mp.set_start_method('spawn')
     except:
         print("no spawn")
-    for reward_type in [3]:
+    for reward_type in [0,1,2,3,4]:
         for n_agents in [4]:
             procs=[]
             for trial in range(10):
