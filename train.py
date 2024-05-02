@@ -35,6 +35,30 @@ def make_env(nagents,coupling=1,rand=0):
     return sim
 
 
+#pri alignment multiagent tumernt(vals)
+def make_env2(nagents,coupling=1,rand=0):
+    vals=[0.30000000000000004, 0.1, 0.4, 0.5, 0.30000000000000004, 0.9, 0.8, 1.0, 0.30000000000000004, 0.7000000000000001, 0.9, 0.8, 1.0, 0.30000000000000004, 0.5, 0.1, 0.4, 0.7000000000000001, 0.9, 0.4, 0.9, 0.6000000000000001, 0.4, 0.6000000000000001]
+    vals=np.array(vals)
+    pos=np.array([[-0.5, -0.5], [-0.5, 0.0], [-0.5, 0.5], [-0.5, 1.0], [-0.5, 1.5], [0.0, -0.5],
+                      [0.0, 0.0], [0.0, 0.5], [0.0, 1.0], [0.0, 1.5], [0.5, -0.5], [0.5, 0.0], [0.5, 1.0],
+                      [0.5, 1.5], [1.0, -0.5], [1.0, 0.0], [1.0, 0.5], [1.0, 1.0], [1.0, 1.5], [1.5, -0.5],
+                      [1.5, 0.0], [1.5, 0.5], [1.5, 1.0], [1.5, 1.5]])
+
+    sim = RoverDomainGym(nagents,40,pos,vals)
+ 
+    sim.data["Coupling"]=coupling
+    sim.data['Number of Agents']=nagents
+    sim.data['Trains per Episode']=32 #pop size
+
+    sim.data["Reward Function"] = assignDifferenceRewardTemporal
+    sim.data["Evaluation Function"] = assignDifferenceRewardTemporal
+
+    obs=sim.reset()
+    
+    return sim
+
+
+
 
 def train(env, reward_mechanism, generations=4000):
     R=[]
@@ -51,10 +75,10 @@ def train(env, reward_mechanism, generations=4000):
         Globals=[]
         evalutaion_data=[]
         for worldIndex in range(populationSize):
-            p=[np.array(env.data["Agent Positions"])]
-            env.data["World Index"]=worldIndex
             
+            env.data["World Index"]=worldIndex
             state = env.reset() 
+            p=[np.array(env.data["Agent Positions"])]
             done=False 
             assignCceaPolicies(env.data)
             trajectories=[[state[a]] for a in range(nagents)]
@@ -75,21 +99,30 @@ def train(env, reward_mechanism, generations=4000):
                 trajectories[a]=np.array(trajectories[a])
 
             G=env.data["Global Reward"]
-            
-            for a in range(nagents):
-                evalutaion_data.append([trajectories[a],policyCol[a],a])
-                reward_mechanism.add(trajectories[a],G,a)
+            D=env.data["Agent Rewards"]
             Globals.append(G)
+            if reward_mechanism != "g" and reward_mechanism != "d":
+                for a in range(nagents):
+                    evalutaion_data.append([trajectories[a],policyCol[a],a])
+                    reward_mechanism.add(trajectories[a],G,a)
+            else:
+                if reward_mechanism == "g":
+                    for pol in policyCol:
+                        pol.fitness=G
+                if reward_mechanism == "d":
+                    for d,pol in zip(D,policyCol):
+                        pol.fitness=d
         R.append(max(Globals))
         pos=pos[np.argmax(Globals)]
-        reward_mechanism.train()
-        for trajectory,policy,agent_index in evalutaion_data:
-            policy.fitness=reward_mechanism.evaluate(trajectory,agent_index)
+        if reward_mechanism != "g" and reward_mechanism != "d":
+            reward_mechanism.train()
+            for trajectory,policy,agent_index in evalutaion_data:
+                policy.fitness=reward_mechanism.evaluate(trajectory,agent_index)
         print("Gen :"+str(gen)+"  Best G: "+str(max(Globals)))
 
         evolveCceaPolicies(env.data)
     return R,pos
 
 if __name__=="__main__":
-    env=make_env(4)
-    train(env,None)
+    env=make_env2(4,2)
+    train(env,"d")
