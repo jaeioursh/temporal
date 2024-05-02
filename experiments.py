@@ -28,7 +28,7 @@ def experiment(n_agents,reward_type,coupling,trial,device):
     elif reward_type==-2:
         reward_mechanism="d"
     R,pos=train(env,reward_mechanism)
-    with open("saves/"+fname,"wb") as f:
+    with open("saves/v2_"+fname,"wb") as f:
         pkl.dump([R,pos],f)
 
 
