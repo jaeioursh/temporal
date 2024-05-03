@@ -36,7 +36,7 @@ def experiment(n_agents,reward_type,coupling,trial,device):
 if __name__ == '__main__':
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print(device)
-    coupling=2
+    coupling=1
     try:
         mp.set_start_method('spawn')
     except:

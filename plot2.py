@@ -8,7 +8,7 @@ nagents=4
 coupling=2
 window=20
 exp=2
-lbl=["End State","End State Aln","Attn.","Attn Aln","Fit Critic"]
+lbl=["End State","End State Aln","Attn.","Attn Aln","Fit Critic","D","G"]
 
 
 for trial in range(9):
@@ -16,7 +16,7 @@ for trial in range(9):
     plt.subplot(3,3,trial+1)
     
     fname="-".join([str(s) for s in [nagents,exp,coupling,trial]])+".pkl"
-    with open("saves/"+fname,"rb") as f:
+    with open("saves/v2_"+fname,"rb") as f:
         r,pos=pkl.load(f)
     if trial==1:
         plt.title(lbl[exp]+"\n"+str(r[-1]))

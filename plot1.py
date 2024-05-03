@@ -7,12 +7,12 @@ plt.style.use('tableau-colorblind10')
 nagents=4
 coupling=2
 window=20
-lbl=["End State","End State Aln","Attn.","Attn Aln","Fit Critic"]
-for exp in range(5):
+lbl=["End State","End State Aln","Attn.","Attn Aln","Fit Critic","D","G"]
+for exp in range(-2,5):
     R=[]
-    for trial in range(12):
+    for trial in range(10):
         fname="-".join([str(s) for s in [nagents,exp,coupling,trial]])+".pkl"
-        with open("saves/"+fname,"rb") as f:
+        with open("saves/v2_"+fname,"rb") as f:
             r,pos=pkl.load(f)
             r=np.array(r)
             r=np.average(r.reshape(-1, window), axis=1)
