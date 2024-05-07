@@ -42,7 +42,7 @@ if __name__ == '__main__':
         print("no spawn")
     for n_agents in [4,8]:
         for coupling in [1,2]:
-            for reward_type in [-2,-1,0,1,2,3,4]:
+            for reward_type in [-2,-1,0,2,4]:
                 procs=[]
                 for trial in range(10):
                     p=mp.Process(target=experiment,args=(n_agents,reward_type,coupling,trial,device))
