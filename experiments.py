@@ -36,18 +36,18 @@ def experiment(n_agents,reward_type,coupling,trial,device):
 if __name__ == '__main__':
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print(device)
-    coupling=1
     try:
         mp.set_start_method('spawn')
     except:
         print("no spawn")
-    for reward_type in [-2,-1,0,1,2,3,4]:
-        for n_agents in [4]:
-            procs=[]
-            for trial in range(10):
-                p=mp.Process(target=experiment,args=(n_agents,reward_type,coupling,trial,device))
-                time.sleep(0.2)
-                procs.append(p)
-                p.start()
-            for p in procs:
-                p.join()
+    for n_agents in [4,8]:
+        for coupling in [1,2]:
+            for reward_type in [-2,-1,0,1,2,3,4]:
+                procs=[]
+                for trial in range(10):
+                    p=mp.Process(target=experiment,args=(n_agents,reward_type,coupling,trial,device))
+                    time.sleep(0.2)
+                    procs.append(p)
+                    p.start()
+                for p in procs:
+                    p.join()

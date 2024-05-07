@@ -5,9 +5,9 @@ import pickle as pkl
 import matplotlib.pyplot as plt
 plt.style.use('tableau-colorblind10')
 nagents=4
-coupling=2
+coupling=1
 window=20
-exp=2
+exp=-1
 lbl=["End State","End State Aln","Attn.","Attn Aln","Fit Critic","D","G"]
 
 
@@ -19,9 +19,9 @@ for trial in range(9):
     with open("saves/v2_"+fname,"rb") as f:
         r,pos=pkl.load(f)
     if trial==1:
-        plt.title(lbl[exp]+"\n"+str(r[-1]))
+        plt.title(lbl[exp]+"\n"+str(r[-1])[:4])
     else:
-        plt.title(str(r[-1]))
+        plt.title(str(r[-1])[:4])
     pos=np.array(pos)
     if 0:
         VALS=[0.8,1.0,0.6,0.3,0.2,0.1]
@@ -41,7 +41,7 @@ for trial in range(9):
                       [0.5, 1.5], [1.0, -0.5], [1.0, 0.0], [1.0, 0.5], [1.0, 1.0], [1.0, 1.5], [1.5, -0.5],
                       [1.5, 0.0], [1.5, 0.5], [1.5, 1.0], [1.5, 1.5]])*30
     
-    txt=[str(i) for i in VALS]
+    txt=[str(i)[:3] for i in VALS]
    
     
 

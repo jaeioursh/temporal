@@ -5,7 +5,7 @@ import pickle as pkl
 import matplotlib.pyplot as plt
 plt.style.use('tableau-colorblind10')
 nagents=4
-coupling=2
+coupling=1
 window=20
 lbl=["End State","End State Aln","Attn.","Attn Aln","Fit Critic","D","G"]
 for exp in range(-2,5):
@@ -29,8 +29,10 @@ for exp in range(-2,5):
     
     plt.fill_between(X,mu-std,mu+std,alpha=0.2, label='_nolegend_')
 
-    plt.plot(X,mu,label=lbl[exp])
-plt.legend()
+    plt.plot(X,mu,label=lbl[exp],linewidth=3.0)
+leg=plt.legend()
+for legobj in leg.legendHandles:
+    legobj.set_linewidth(6.0)
 plt.title(str(nagents)+" agents")
 plt.xlabel("Generations")
 plt.ylabel("Global Evaluation")
