@@ -43,7 +43,7 @@ def make_env2(nagents,coupling=1,rand=0):
     vals=np.array(vals)
     pos=np.array(pos)
 
-    sim = RoverDomainGym(nagents,40,pos,vals)
+    sim = RoverDomainGym(nagents,45,pos,vals)
  
     sim.data["Coupling"]=coupling
     sim.data['Number of Agents']=nagents

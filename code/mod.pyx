@@ -309,7 +309,7 @@ def assignDifferenceRewardTemporal(data):
         globalWithoutReward = 0
         for poiIndex in range(number_pois):
             closestObsDistanceSqr = Inf
-            for stepIndex in range(historyStepCount-1,historyStepCount):
+            for stepIndex in range(historyStepCount):
                 # Count how many agents observe poi, update closest distance if necessary
                 observerCount = 0
                 stepClosestObsDistanceSqr = Inf

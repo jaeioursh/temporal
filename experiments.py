@@ -1,4 +1,4 @@
-from train import make_env,train
+from train import make_env2,train
 from rewards.align import align
 from rewards.attention import attention
 from rewards.fitnesscritic import fitnesscritic
@@ -11,7 +11,7 @@ import torch.multiprocessing as mp
 
 def experiment(n_agents,reward_type,coupling,trial,device):
     fname="-".join([str(i) for i in [n_agents,reward_type,coupling,trial]])+".pkl"
-    env=make_env(n_agents,coupling)
+    env=make_env2(n_agents,coupling)
     
     if reward_type==0:
         reward_mechanism=align(n_agents,device,loss_f=0)

@@ -4,11 +4,11 @@ import numpy as np
 import pickle as pkl
 import matplotlib.pyplot as plt
 plt.style.use('tableau-colorblind10')
-nagents=4
-coupling=1
+nagents=8
+coupling=2
 window=20
 lbl=["End State","End State Aln","Attn.","Attn Aln","Fit Critic","D","G"]
-for exp in range(-2,5):
+for exp in [-2,-1,0,2,4]:
     R=[]
     for trial in range(10):
         fname="-".join([str(s) for s in [nagents,exp,coupling,trial]])+".pkl"
