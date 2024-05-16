@@ -18,7 +18,7 @@ def test(params):
     return np.mean(R[-10:])
 
 def opt(idx):
-    C=[(0.0001, 0.001),(3.0,120.0),(100.0,100000.0)]
+    C=[(0.0001, 0.001),(4.0,240.0),(100.0,100000.0)]
     def saver(res):
         with open(str(idx)+"-82.pkl","wb") as f:
             data=[res.x_iters,res.func_vals]
@@ -29,4 +29,4 @@ def opt(idx):
     print(res.x)
     print(res.fun)
     
-opt()
+opt(0)
