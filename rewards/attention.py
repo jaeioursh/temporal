@@ -102,7 +102,6 @@ class attention():
             self.hist=[deque(maxlen=hist) for i in range(nagents)]
 
     def add(self,trajectory,G,agent_index):
-        print(len(trajectory))
         self.hist[agent_index].append([trajectory,G])
 
     def evaluate(self,trajectory,agent_index):
