@@ -94,6 +94,7 @@ def train(env, reward_mechanism, generations=4000):
                     trajectories[a].append(state[a])
                 p.append(np.array(env.data["Agent Positions"]))
             pos.append(p)
+            
             for a in range(nagents):
                 trajectories[a]=np.array(trajectories[a])
 

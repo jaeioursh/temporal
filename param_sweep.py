@@ -8,12 +8,14 @@ from skopt import callbacks
 import multiprocessing as mp
 import pickle as pkl
 import numpy as np
+import torch
 
 def test(params):
     n_agents=8
     coupling=2
     env=make_env2(n_agents,coupling)
-    reward_mechanism=attention(n_agents,"cuda",loss_f=0)
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    reward_mechanism=attention(n_agents,device,loss_f=0)
     R,pos=train(env,reward_mechanism,generations=1000)
     return np.mean(R[-10:])
 
