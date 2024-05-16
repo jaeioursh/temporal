@@ -25,7 +25,7 @@ def getPositionEncoding(seq_len, d, n=10000):
     return P
 
 class Net(nn.Module):
-    def __init__(self,device,hidden=20*4,lr=5e-4,seq_len=31,idim=8,loss_fn=0):#*4
+    def __init__(self,device,hidden=20*4,lr=5e-4,seq_len=46,idim=8,loss_fn=0):#*4
         super(Net, self).__init__()
         learning_rate=lr
         self.device=device
@@ -90,12 +90,19 @@ class Net(nn.Module):
         return loss
     
 class attention():
-    def __init__(self,nagents,device,loss_f=0):
+    def __init__(self,nagents,device,loss_f=0,params=None):
         self.nagents=nagents
-        self.nets=[Net(device,loss_fn=loss_f).to(device) for i in range(nagents)]
-        self.hist=[deque(maxlen=30000) for i in range(nagents)]
+        if params is None:
+            self.nets=[Net(device,loss_fn=loss_f).to(device) for i in range(nagents)]
+            self.hist=[deque(maxlen=30000) for i in range(nagents)]
+        else:
+            lr,hidden,hist=params
+            hidden,hist=int(hidden),int(hist)
+            self.nets=[Net(device,hidden=hidden,lr=lr,loss_fn=loss_f).to(device) for i in range(nagents)]
+            self.hist=[deque(maxlen=hist) for i in range(nagents)]
 
     def add(self,trajectory,G,agent_index):
+        print(len(trajectory))
         self.hist[agent_index].append([trajectory,G])
 
     def evaluate(self,trajectory,agent_index):
