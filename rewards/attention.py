@@ -25,7 +25,7 @@ def getPositionEncoding(seq_len, d, n=10000):
     return P
 
 class Net(nn.Module):
-    def __init__(self,device,hidden=20*4,lr=5e-4,seq_len=46,idim=8,loss_fn=0):#*4
+    def __init__(self,device,hidden=200,lr=5e-4,seq_len=46,idim=8,loss_fn=0):#*4
         super(Net, self).__init__()
         learning_rate=lr
         self.device=device
@@ -94,7 +94,7 @@ class attention():
         self.nagents=nagents
         if params is None:
             self.nets=[Net(device,loss_fn=loss_f).to(device) for i in range(nagents)]
-            self.hist=[deque(maxlen=30000) for i in range(nagents)]
+            self.hist=[deque(maxlen=100000) for i in range(nagents)]
         else:
             lr,hidden,hist=params
             hidden,hist=int(hidden),int(hist)
