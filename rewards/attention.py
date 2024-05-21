@@ -40,7 +40,7 @@ class Net(nn.Module):
         self.pos=torch.from_numpy(self.pos.astype(np.float32)).to(self.device)
 
         if loss_fn==0:
-            self.loss_fn = lambda x,y: torch.nn.MSELoss(reduction='sum')(x[:,-1,:],y[:,-1,:])
+            self.loss_fn = lambda x,y: torch.nn.MSELoss(reduction='sum')#(x[:,-1,:],y[:,-1,:])
         elif loss_fn==1:
             self.loss_fn = self.alignment_loss
         elif loss_fn ==2:

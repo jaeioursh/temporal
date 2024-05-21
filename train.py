@@ -1,8 +1,12 @@
 import numpy as np
 
+
+import multiprocessing as mp
+import pickle as pkl
+import time
+
 import pyximport
 pyximport.install() 
-
 from rover_domain_core_gym import RoverDomainGym
 from code.ccea_2 import *
 from code.mod import assignDifferenceRewardTemporal
@@ -123,6 +127,68 @@ def train(env, reward_mechanism, generations=4000):
         evolveCceaPolicies(env.data)
     return R,pos
 
+def collect(idx, generations=4000):
+    env=make_env2(8,2)
+    R=[]
+    pos=[]
+    initCcea(input_shape=8, num_outputs=2, num_units=20)(env.data)
+
+    populationSize=len(env.data['Agent Populations'][0])
+    pop=env.data['Agent Populations']
+    
+    nagents=env.data['Number of Agents']
+    STATE=[]
+    for gen in range(generations):
+        
+        Globals=[]
+        evalutaion_data=[]
+        for worldIndex in range(populationSize):
+            
+            env.data["World Index"]=worldIndex
+            state = env.reset() 
+            S=[state]
+            done=False 
+            assignCceaPolicies(env.data)
+            trajectories=[[state[a]] for a in range(nagents)]
+            policyCol=env.data["Agent Policies"]
+            while not done:
+                action=[]
+                for s,pol in zip(state,policyCol):
+        
+                    a = pol.get_action(s)
+                    action.append(a)
+                action = np.array(action)*2.0
+                state, D, done, info = env.step(action)
+                S.append(state)
+                
+            
+            G=env.data["Global Reward"]
+            STATE.append([np.array(S),G])
+            D=env.data["Agent Rewards"]
+            Globals.append(G)
+            
+            
+            for d,pol in zip(D,policyCol):
+                pol.fitness=d
+        
+        print("Gen :"+str(gen)+"  Best G: "+str(max(Globals)))
+
+        evolveCceaPolicies(env.data)
+    with open("saves/data_"+idx+".pkl","wb") as f:
+        pkl.dump(STATE,f)
+    return 
+
+
 if __name__=="__main__":
-    env=make_env2(4,2)
-    train(env,"d")
+    if 0:
+        env=make_env2(4,2)
+        train(env,"d")
+    procs=[]
+    for trial in range(12):
+        
+        p=mp.Process(target=collect,args=(trial,))
+        time.sleep(0.2)
+        procs.append(p)
+        p.start()
+    for p in procs:
+        p.join()

@@ -8,7 +8,7 @@ nagents=8
 coupling=2
 window=20
 lbl=["End State","End State Aln","Attn.","Attn Aln","Fit Critic","D","G"]
-for exp in [-2,-1,0,2,4]:
+for exp in [-2,-1,0,2,3,4]:
     R=[]
     for trial in range(10):
         fname="-".join([str(s) for s in [nagents,exp,coupling,trial]])+".pkl"

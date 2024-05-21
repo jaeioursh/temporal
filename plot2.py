@@ -7,7 +7,7 @@ plt.style.use('tableau-colorblind10')
 nagents=8
 coupling=2
 window=20
-exp=-1
+exp=4
 lbl=["End State","End State Aln","Attn.","Attn Aln","Fit Critic","D","G"]
 
 
@@ -49,8 +49,8 @@ for trial in range(9):
         mkr=[".",",","*","v","^","<",">","1","2","3","4","8"][i]
         mkr="$"+str(i)+"$"
         #clr="k"
-        x=pos[1:,i,0]
-        y=pos[1:,i,1]
+        x=pos[::2,i,0]
+        y=pos[::2,i,1]
         print(len(x))
         plt.plot(x,y,color='k',marker=mkr,linewidth=1.0,linestyle=":")
 
