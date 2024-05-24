@@ -7,7 +7,7 @@ plt.style.use('tableau-colorblind10')
 nagents=8
 coupling=2
 window=20
-exp=4
+exp=-2
 lbl=["End State","End State Aln","Attn.","Attn Aln","Fit Critic","D","G"]
 
 

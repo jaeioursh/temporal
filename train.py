@@ -174,7 +174,7 @@ def collect(idx, generations=4000):
         print("Gen :"+str(gen)+"  Best G: "+str(max(Globals)))
 
         evolveCceaPolicies(env.data)
-    with open("saves/data_"+idx+".pkl","wb") as f:
+    with open("saves/data_"+str(idx)+".pkl","wb") as f:
         pkl.dump(STATE,f)
     return 
 
