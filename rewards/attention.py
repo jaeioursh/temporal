@@ -25,7 +25,7 @@ def getPositionEncoding(seq_len, d, n=10000):
     return P
 
 class Net(nn.Module):
-    def __init__(self,device,hidden=200,lr=5e-4,seq_len=46,idim=8,loss_fn=0):#*4
+    def __init__(self,device,hidden=50,lr=5e-3,seq_len=46,idim=8,loss_fn=0):#*4
         super(Net, self).__init__()
         learning_rate=lr
         self.device=device
@@ -35,16 +35,17 @@ class Net(nn.Module):
         
         self.wout1=nn.Linear(hidden,hidden)
         self.wout2=nn.Linear(hidden,1)
+        self.wout3=nn.Linear(seq_len,1)
         self.acti=nn.LeakyReLU()
         self.pos=getPositionEncoding(seq_len,idim)
         self.pos=torch.from_numpy(self.pos.astype(np.float32)).to(self.device)
 
         if loss_fn==0:
-            self.loss_fn = lambda x,y: torch.nn.MSELoss(reduction='sum')#(x[:,-1,:],y[:,-1,:])
+            self.loss_fn = torch.nn.MSELoss(reduction='sum')
         elif loss_fn==1:
             self.loss_fn = self.alignment_loss
         elif loss_fn ==2:
-            self.loss_fn = lambda x,y: self.alignment_loss(x[:,-1,:],y[:,-1,:]) + torch.nn.MSELoss(reduction='sum')(x[:,-1,:],y[:,-1,:])
+            self.loss_fn = lambda x,y: self.alignment_loss(x,y) + torch.nn.MSELoss(reduction='sum')(x,y)
 
         self.sig = torch.nn.Sigmoid()
 
@@ -55,17 +56,21 @@ class Net(nn.Module):
         
         KQV=self.w1(x+self.pos)
         res,attn=scaled_dot_product_attention(KQV,KQV,KQV,self.device)
-        return self.wout2(self.acti(self.wout1(res)))
+        transformout=self.wout2(self.acti(self.wout1(res)))
+        transformout=torch.flatten(transformout,start_dim=1,end_dim=2)
+        return self.wout3(transformout)
 
     def feed(self,x):
-        x=torch.from_numpy(x.astype(np.float32)).to(self.device)
+        if not torch.is_tensor(x):
+            x=torch.from_numpy(x.astype(np.float32)).to(self.device)
         pred=self.forward(x)
         return pred.cpu().detach().numpy()
         
     
     def train(self,x,y,verb=0):
-        x=torch.from_numpy(x.astype(np.float32)).to(self.device)
-        y=torch.from_numpy(y.astype(np.float32)).to(self.device)
+        if not torch.is_tensor(x):
+            x=torch.from_numpy(x.astype(np.float32)).to(self.device)
+            y=torch.from_numpy(y.astype(np.float32)).to(self.device)
         pred=self.forward(x)
         
         loss=self.loss_fn(pred,y)
@@ -75,16 +80,11 @@ class Net(nn.Module):
         return loss.cpu().detach().item()
 
     def alignment_loss(self,o, t):
-        o=o
-        t=t
         ot=torch.transpose(o,0,1)
         tt=torch.transpose(t,0,1)
 
-        O=o-ot
-        T=t-tt
+        align = torch.mul(o-ot,t-tt)
 
-        align = torch.mul(O,T)
-        #print(align)
         align = self.sig(align)
         loss = -torch.mean(align)
         return loss
@@ -109,11 +109,11 @@ class attention():
 
     def train(self):
         for a in range(self.nagents):
-            for i in range(100):
-                if len(self.hist[a])<24:
+            for i in range(20):
+                if len(self.hist[a])<256:
                     trajG=self.hist[a]
                 else:
-                    trajG=sample(self.hist[a],24)
+                    trajG=sample(self.hist[a],256)
                 S,G=[],[]
                 for traj,g in trajG:
                     S.append(traj)

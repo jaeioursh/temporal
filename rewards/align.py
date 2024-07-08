@@ -75,11 +75,11 @@ class align():
 
     def train(self):
         for a in range(self.nagents):
-            for i in range(100):
-                if len(self.hist[a])<24:
+            for i in range(20):
+                if len(self.hist[a])<256:
                     trajG=self.hist[a]
                 else:
-                    trajG=sample(self.hist[a],24)
+                    trajG=sample(self.hist[a],256)
                 S,G=[],[]
                 for traj,g in trajG:
                     S.append(traj[-1])

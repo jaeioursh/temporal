@@ -141,7 +141,6 @@ def collect(idx, generations=4000):
     for gen in range(generations):
         
         Globals=[]
-        evalutaion_data=[]
         for worldIndex in range(populationSize):
             
             env.data["World Index"]=worldIndex
@@ -149,7 +148,6 @@ def collect(idx, generations=4000):
             S=[state]
             done=False 
             assignCceaPolicies(env.data)
-            trajectories=[[state[a]] for a in range(nagents)]
             policyCol=env.data["Agent Policies"]
             while not done:
                 action=[]
@@ -184,7 +182,7 @@ if __name__=="__main__":
         env=make_env2(4,2)
         train(env,"d")
     procs=[]
-    for trial in range(12):
+    for trial in range(4):
         
         p=mp.Process(target=collect,args=(trial,))
         time.sleep(0.2)
