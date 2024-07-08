@@ -44,7 +44,7 @@ if __name__ == '__main__':
         for coupling in [2]:
             for reward_type in [3,4,0,1,2]:
                 procs=[]
-                for trial in range(2):
+                for trial in range(8):
                     p=mp.Process(target=experiment,args=(n_agents,reward_type,coupling,trial,device))
                     time.sleep(0.2)
                     procs.append(p)
