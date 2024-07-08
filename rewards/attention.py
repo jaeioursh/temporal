@@ -57,7 +57,7 @@ class Net(nn.Module):
         KQV=self.w1(x+self.pos)
         res,attn=scaled_dot_product_attention(KQV,KQV,KQV,self.device)
         transformout=self.wout2(self.acti(self.wout1(res)))
-        transformout=torch.flatten(transformout,start_dim=1,end_dim=2)
+        transformout=torch.flatten(transformout,start_dim=-2,end_dim=-1)
         return self.wout3(transformout)
 
     def feed(self,x):
@@ -105,7 +105,7 @@ class attention():
         self.hist[agent_index].append([trajectory,G])
 
     def evaluate(self,trajectory,agent_index):
-        return self.nets[agent_index].feed(trajectory)[-1][0]
+        return self.nets[agent_index].feed(trajectory).item()
 
     def train(self):
         for a in range(self.nagents):
@@ -117,10 +117,10 @@ class attention():
                 S,G=[],[]
                 for traj,g in trajG:
                     S.append(traj)
-                    G.append([[0.0]]*(len(traj)-1)+[[g]])
+                    G.append([g])
                 S,G=np.array(S),np.array(G)
                 self.nets[a].train(S,G)
-[[0.0]]
+
 if __name__ == "__main__":
     L=10
     net=Net(idim=6,seq_len=L,loss_fn=0)
